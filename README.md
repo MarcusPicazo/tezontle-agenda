@@ -105,3 +105,10 @@ npm install
 npm run dev      # http://localhost:4321
 npm test         # pruebas de los horarios
 ```
+
+## Supabase gratis: evitar la pausa
+
+El plan gratuito pausa el proyecto tras 7 días sin actividad. `netlify/functions/keep-alive.mts`
+es una tarea programada de Netlify que consulta Supabase una vez al día para evitarlo. Se ve en
+Netlify → **Logs → Functions → keep-alive**. Si alguna vez se pausara, se reactiva desde el
+panel de Supabase con **Restore project** (los datos no se pierden).
