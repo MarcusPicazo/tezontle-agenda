@@ -10,7 +10,7 @@ Diseño, logo, colores y tipografías tomados de `tezontle-web` (sin modificarlo
 ## Cómo funciona
 
 ```
-Navegador (Astro, estático en Vercel)
+Navegador (Astro, estático en Netlify)
   ├─ lee horarios ocupados ──▶ Supabase RPC booked_slots()  (solo fechas, sin datos personales)
   └─ reserva ───────────────▶ Edge Function "book"
                                  ├─ valida el horario (schedule.ts)
@@ -74,14 +74,15 @@ npx supabase functions deploy book --no-verify-jwt
 
 `MARCUS_EMAIL` es el correo al que llega cada reserva (actualmente `tezontle3d@outlook.com`).
 
-### 4. Página en Vercel
+### 4. Página en Netlify
 
-1. Importe este repositorio en [vercel.com](https://vercel.com) (detecta Astro solo).
-2. Variables de entorno (Supabase → Project Settings → API):
+1. En [app.netlify.com](https://app.netlify.com): **Add new site → Import an existing project →
+   GitHub →** `tezontle-agenda`. `netlify.toml` ya trae el comando y la carpeta.
+2. **Site configuration → Environment variables** (Supabase → Project Settings → API):
    - `PUBLIC_SUPABASE_URL`
    - `PUBLIC_SUPABASE_ANON_KEY` (la *publishable* o *anon*, **nunca** la service role)
-3. Agregue el dominio final (ej. `agenda.tezontle3d.com`) a `ALLOWED_ORIGINS` y vuelva a
-   correr `supabase secrets set`.
+3. Vuelva a desplegar (Deploys → Trigger deploy) y agregue la URL de Netlify (o su dominio,
+   ej. `agenda.tezontle3d.com`) a `ALLOWED_ORIGINS` y corra otra vez `supabase secrets set`.
 
 Sin estas variables la página corre en **modo demostración** (reservas solo en el navegador).
 
@@ -92,7 +93,7 @@ Sin estas variables la página corre en **modo demostración** (reservas solo en
   evento en Google Calendar (Google avisa al candidato).
 - **Cambiar horarios:** edite `WEEKLY_SLOTS` en `supabase/functions/_shared/schedule.ts`,
   vuelva a desplegar la función (`npx supabase functions deploy book --no-verify-jwt`) y la
-  página (push a GitHub).
+  página (push a GitHub; Netlify se actualiza solo).
 
 ## Desarrollo
 
