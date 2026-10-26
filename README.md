@@ -75,7 +75,7 @@ npx supabase secrets set --env-file supabase/functions/.env
 npx supabase functions deploy book --no-verify-jwt
 ```
 
-`MARCUS_EMAIL` es el correo al que llega cada reserva (actualmente `tezontle3d@outlook.com`).
+`MARCUS_EMAIL` es el correo al que llega cada reserva (actualmente `marcuspicazo@outlook.com`).
 
 ### 4. Página en Netlify
 
