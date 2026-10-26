@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+
+const updated = '26 de octubre de 2026';
+---
+
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aviso de privacidad · Agenda Tezontle 3D</title>
+    <meta name="description" content="Aviso de privacidad de la agenda de entrevistas de Tezontle 3D." />
+    <meta name="theme-color" content="#F4EFE8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="min-h-dvh bg-arena font-sans text-grafito antialiased">
+    <header class="mx-auto flex w-full max-w-[1200px] items-center justify-between px-4 pt-6 sm:px-6 sm:pt-8">
+      <a href="/" aria-label="Volver a la agenda"><img src="/logo.svg" alt="Tezontle 3D" class="h-7 w-auto sm:h-8" width="140" height="32" /></a>
+      <a href="/" class="text-sm font-semibold text-tinta-suave hover:text-grafito">← Volver a la agenda</a>
+    </header>
+
+    <main class="mx-auto w-full max-w-[1200px] px-4 pt-8 pb-16 sm:px-6 sm:pt-12">
+      <article class="card mx-auto max-w-3xl p-6 sm:p-12">
+        <span aria-hidden="true" class="mb-6 block h-1.5 w-16 rounded-full bg-laton"></span>
+        <h1 class="text-4xl sm:text-5xl">Aviso de privacidad</h1>
+        <p class="mt-3 text-sm text-tinta-suave">Última actualización: {updated}</p>
+
+        <div class="mt-8 space-y-6 leading-relaxed text-tinta-suave [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:text-grafito [&_strong]:text-grafito">
+          <p>
+            Tezontle 3D, con domicilio en Ciudad de México, México, es responsable del uso de los datos que usted
+            proporciona al agendar una entrevista del proceso de selección para su equipo de ventas.
+          </p>
+
+          <h2>Qué datos recabamos</h2>
+          <p>Nombre completo, correo electrónico y, si usted lo comparte, teléfono o WhatsApp y comentarios.</p>
+
+          <h2>Para qué los usamos</h2>
+          <p>
+            Únicamente para agendar y realizar su entrevista: crear la llamada de Google Meet, enviarle la invitación
+            y, en su caso, contactarle sobre el proceso de selección. No los vendemos ni los usamos con fines
+            publicitarios.
+          </p>
+
+          <h2>Con quién se comparten</h2>
+          <p>
+            Con los proveedores que hacen funcionar la agenda: Supabase (almacenamiento de la reserva) y Google
+            (Google Calendar y Google Meet, para crear la llamada y enviar la invitación). Esta aplicación solo crea
+            eventos en el calendario de Tezontle 3D; no accede a su calendario ni a su cuenta.
+          </p>
+
+          <h2>Cuánto tiempo los conservamos</h2>
+          <p>Durante el proceso de selección y hasta 12 meses después, salvo que usted pida eliminarlos antes.</p>
+
+          <h2>Sus derechos</h2>
+          <p>
+            Puede solicitar acceso, corrección, cancelación u oposición al uso de sus datos (derechos ARCO), o
+            cancelar su entrevista, escribiendo a <strong>marcuspicazo@outlook.com</strong>.
+          </p>
+        </div>
+      </article>
+    </main>
+  </body>
+</html>
