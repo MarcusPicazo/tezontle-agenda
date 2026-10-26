@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 120" role="img" aria-label="Tezontle">
+  <rect x="0" y="16" width="96" height="16" rx="3" fill="#FBF9F5"/>
+  <rect x="22" y="52" width="74" height="16" rx="3" fill="#9A4535"/>
+  <rect x="0" y="88" width="96" height="16" rx="3" fill="#FBF9F5"/>
+  <text x="124" y="92" font-family="Fraunces, Georgia, serif" font-size="88" fill="#FBF9F5" letter-spacing="-1">tezontle</text>
+</svg>

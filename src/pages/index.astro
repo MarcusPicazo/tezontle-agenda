@@ -1,0 +1,186 @@
+---
+import '../styles/global.css';
+import { SLOT_MINUTES } from '../../supabase/functions/_shared/schedule';
+
+const title = 'Agende su entrevista · Tezontle 3D';
+const description =
+  'Proceso de selección para el equipo de ventas de Tezontle 3D. Elija el horario de su entrevista por Google Meet.';
+---
+
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#F4EFE8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/piedra.jpg" />
+  </head>
+  <body class="min-h-dvh bg-arena font-sans text-grafito antialiased">
+    <header class="mx-auto flex w-full max-w-[1200px] items-center justify-between px-4 pt-6 sm:px-6 sm:pt-8">
+      <img src="/logo.svg" alt="Tezontle 3D" class="h-7 w-auto sm:h-8" width="140" height="32" />
+      <span
+        class="rounded-full bg-cal px-3.5 py-1.5 text-xs font-semibold tracking-wide text-tinta-suave uppercase shadow-[inset_0_0_0_1px_rgba(43,43,43,0.08)] sm:text-[13px]"
+      >
+        Reclutamiento · Ventas
+      </span>
+    </header>
+
+    <main class="mx-auto w-full max-w-[1200px] px-4 pt-6 pb-16 sm:px-6 sm:pt-10">
+      <!-- Hero: la misma foto de piedras de tezontle de la portada de la web. -->
+      <section class="relative overflow-hidden rounded-[28px] sm:rounded-[36px]">
+        <img
+          src="/piedra.jpg"
+          alt=""
+          aria-hidden="true"
+          fetchpriority="high"
+          class="absolute inset-0 h-full w-full object-cover object-[78%_85%]"
+        />
+        <div
+          class="absolute inset-0 bg-linear-to-r from-arena/95 via-arena/70 via-45% to-transparent max-sm:bg-linear-to-b max-sm:from-arena/95 max-sm:via-arena/85 max-sm:via-60% max-sm:to-arena/30"
+        >
+        </div>
+        <div class="relative px-6 py-12 sm:px-12 sm:py-20 lg:py-24">
+          <span aria-hidden="true" class="mb-7 block h-1.5 w-16 rounded-full bg-laton"></span>
+          <p class="text-sm font-semibold tracking-wide text-tinta-suave uppercase">
+            Proceso de selección · Equipo de ventas
+          </p>
+          <h1 class="mt-3 max-w-2xl text-4xl leading-[1.08] sm:text-6xl">Agende su entrevista con Tezontle 3D.</h1>
+          <p class="mt-5 max-w-xl text-base leading-relaxed text-tinta-suave sm:text-lg">
+            Gracias por su interés en sumarse a nuestro equipo comercial. Elija el horario que mejor le acomode y
+            al confirmar le llegará a su correo la invitación con el enlace de Google Meet.
+          </p>
+          <ul class="mt-7 flex flex-wrap gap-2 text-sm font-medium">
+            <li class="flex items-center gap-2 rounded-full bg-cal/80 px-3.5 py-2 backdrop-blur-md">
+              <svg class="h-4 w-4 text-piedra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2" stroke-linecap="round"></path></svg>
+              {SLOT_MINUTES} minutos
+            </li>
+            <li class="flex items-center gap-2 rounded-full bg-cal/80 px-3.5 py-2 backdrop-blur-md">
+              <svg class="h-4 w-4 text-piedra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="13" height="12" rx="2.5"></rect><path d="m16 10 5-3v10l-5-3" stroke-linejoin="round"></path></svg>
+              Google Meet
+            </li>
+            <li class="flex items-center gap-2 rounded-full bg-cal/80 px-3.5 py-2 backdrop-blur-md">
+              <svg class="h-4 w-4 text-piedra" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-5.6-7-11a7 7 0 0 1 14 0c0 5.4-7 11-7 11Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+              Hora de Ciudad de México
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div id="demo-banner" hidden class="mt-6 rounded-2xl bg-cal px-5 py-3 text-sm text-tinta-suave">
+        <strong class="text-grafito">Modo demostración:</strong> Supabase aún no está configurado, las reservas se
+        guardan solo en este navegador y el enlace de Meet es de ejemplo.
+      </div>
+
+      <!-- Paso 1 y 2: día y hora. -->
+      <section id="picker" class="card mt-6 grid gap-10 p-6 sm:mt-8 sm:p-10 lg:grid-cols-[1.15fr_1fr] lg:gap-14" aria-labelledby="picker-title">
+        <div>
+          <h2 id="picker-title" class="flex items-center gap-3 text-2xl sm:text-3xl">
+            <span class="step-num font-sans">1</span> Elija un día
+          </h2>
+          <p class="mt-2 text-sm text-tinta-suave">Los días con punto tienen horarios libres.</p>
+
+          <div class="mt-6 grid grid-cols-5 gap-2 text-center text-xs font-semibold tracking-wide text-piedra uppercase sm:gap-3">
+            <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span>
+          </div>
+          <div id="days" class="mt-3 grid grid-cols-5 gap-2 sm:gap-3" role="group" aria-label="Días disponibles">
+            {Array.from({ length: 15 }).map(() => <div class="skeleton aspect-square rounded-2xl"></div>)}
+          </div>
+          <p id="days-month" class="mt-4 text-sm text-tinta-suave"></p>
+        </div>
+
+        <div>
+          <h2 class="flex items-center gap-3 text-2xl sm:text-3xl">
+            <span class="step-num font-sans">2</span> Elija la hora
+          </h2>
+          <p id="selected-day-label" class="mt-2 text-sm text-tinta-suave">Primero elija un día.</p>
+          <div id="slots" class="mt-6 space-y-2.5" role="group" aria-label="Horarios"></div>
+          <p id="tz-note" hidden class="mt-4 text-xs text-tinta-suave"></p>
+        </div>
+      </section>
+
+      <!-- Paso 3: datos. -->
+      <section id="details" hidden class="card mt-6 p-6 sm:mt-8 sm:p-10" aria-labelledby="details-title">
+        <div class="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:gap-14">
+          <div>
+            <button id="back" type="button" class="flex items-center gap-2 text-sm font-semibold text-tinta-suave hover:text-grafito">
+              <svg class="h-3 w-4" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 1 1 6l5 5M1 6h14" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              Cambiar horario
+            </button>
+            <h2 id="details-title" class="mt-6 flex items-center gap-3 text-2xl sm:text-3xl">
+              <span class="step-num font-sans">3</span> Sus datos
+            </h2>
+            <div class="mt-6 rounded-2xl bg-arena p-5">
+              <p class="text-xs font-semibold tracking-wide text-tinta-suave uppercase">Su entrevista</p>
+              <p id="summary-date" class="mt-2 font-display text-2xl first-letter:uppercase"></p>
+              <p id="summary-time" class="mt-1 font-medium text-tinta-suave"></p>
+              <p class="mt-3 text-sm text-tinta-suave">{SLOT_MINUTES} min · Google Meet · Entrevista para ventas</p>
+            </div>
+          </div>
+
+          <form id="booking-form" class="space-y-4" novalidate>
+            <div>
+              <label for="f-name" class="block text-sm font-semibold">Nombre completo</label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required minlength="2" maxlength="120" class="field mt-1.5" placeholder="Su nombre y apellido" />
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+              <div>
+                <label for="f-email" class="block text-sm font-semibold">Correo electrónico</label>
+                <input id="f-email" name="email" type="email" autocomplete="email" required maxlength="200" class="field mt-1.5" placeholder="nombre@correo.com" />
+              </div>
+              <div>
+                <label for="f-phone" class="block text-sm font-semibold">WhatsApp <span class="font-normal text-tinta-suave">(opcional)</span></label>
+                <input id="f-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" class="field mt-1.5" placeholder="55 1234 5678" />
+              </div>
+            </div>
+            <div>
+              <label for="f-notes" class="block text-sm font-semibold">
+                ¿Algo que debamos saber? <span class="font-normal text-tinta-suave">(opcional)</span>
+              </label>
+              <textarea id="f-notes" name="notes" rows="3" maxlength="1000" class="field mt-1.5 resize-none" placeholder="Experiencia en ventas, LinkedIn, ciudad…"></textarea>
+            </div>
+            <!-- Campo trampa para bots: oculto a las personas. -->
+            <div class="absolute -left-[9999px]" aria-hidden="true">
+              <label>No llenar <input name="website" type="text" tabindex="-1" autocomplete="off" /></label>
+            </div>
+
+            <p id="form-error" role="alert" hidden class="rounded-xl bg-rojo-tezontle/10 px-4 py-3 text-sm font-medium text-rojo-tezontle"></p>
+
+            <div class="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+              <button id="submit" type="submit" class="btn btn-primary w-full sm:w-auto">Confirmar entrevista</button>
+              <p class="text-xs text-tinta-suave">Le enviaremos la invitación con el enlace de Meet a su correo.</p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Confirmación. -->
+      <section id="done" hidden class="card mt-6 px-6 py-12 text-center sm:mt-8 sm:px-10 sm:py-16" aria-live="polite">
+        <div class="mx-auto grid h-16 w-16 place-items-center rounded-full bg-arena">
+          <svg class="h-7 w-7 text-grafito" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </div>
+        <h2 class="mt-6 text-3xl sm:text-5xl">¡Listo! Su entrevista está agendada.</h2>
+        <p id="done-when" class="mt-4 text-lg font-medium first-letter:uppercase"></p>
+        <p class="mx-auto mt-3 max-w-lg text-tinta-suave">
+          Le enviamos la invitación con el enlace de Google Meet a <strong id="done-email" class="text-grafito"></strong>.
+          Si no la ve, revise su carpeta de spam.
+        </p>
+        <div class="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a id="done-meet" href="#" target="_blank" rel="noopener" class="btn btn-primary">Abrir enlace de Meet</a>
+        </div>
+      </section>
+
+      <footer class="mt-12 flex flex-col items-center gap-2 text-center text-sm text-tinta-suave">
+        <img src="/favicon.svg" alt="" aria-hidden="true" class="h-8 w-8 rounded-lg" />
+        <p>Tezontle 3D · Showroom virtual 3D con inventario en vivo para preventas.</p>
+      </footer>
+    </main>
+
+    <script src="../scripts/booking.ts"></script>
+  </body>
+</html>
