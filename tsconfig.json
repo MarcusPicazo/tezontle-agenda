@@ -1,5 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "supabase/functions/book"]
+  "exclude": ["dist", "netlify", "supabase/functions/book", "supabase/functions/book-demo", "supabase/functions/team", "supabase/functions/_shared/google.ts", "supabase/functions/_shared/http.ts"]
 }

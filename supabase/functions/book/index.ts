@@ -9,6 +9,7 @@
 // Si Google falla, borra la reserva para no dejar el horario bloqueado sin llamada.
 
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import { createMeetEvent } from '../_shared/google.ts';
 import { findSlot, SLOT_MINUTES, TIMEZONE } from '../_shared/schedule.ts';
 
 const env = (k: string) => Deno.env.get(k) ?? '';
@@ -46,23 +47,7 @@ function formatCdmx(iso: string) {
   }).format(new Date(iso));
 }
 
-async function googleAccessToken(): Promise<string> {
-  const res = await fetch('https://oauth2.googleapis.com/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({
-      client_id: env('GOOGLE_CLIENT_ID'),
-      client_secret: env('GOOGLE_CLIENT_SECRET'),
-      refresh_token: env('GOOGLE_REFRESH_TOKEN'),
-      grant_type: 'refresh_token',
-    }),
-  });
-  const data = await res.json();
-  if (!res.ok || !data.access_token) throw new Error(`google_token: ${JSON.stringify(data)}`);
-  return data.access_token;
-}
-
-async function createMeetEvent(p: {
+async function createInterviewEvent(p: {
   bookingId: string;
   start: string;
   end: string;
@@ -70,12 +55,9 @@ async function createMeetEvent(p: {
   email: string;
   phone: string;
   notes: string;
-}): Promise<{ id: string; meetUrl: string }> {
-  const token = await googleAccessToken();
-  const calendarId = encodeURIComponent(env('GOOGLE_CALENDAR_ID') || 'primary');
+}) {
   const attendees = [{ email: p.email, displayName: p.name }];
   if (MARCUS_EMAIL) attendees.push({ email: MARCUS_EMAIL, displayName: 'Marcus · Tezontle 3D' });
-
   const description = [
     'Entrevista del proceso de selección para el equipo de ventas de Tezontle 3D.',
     '',
@@ -86,40 +68,14 @@ async function createMeetEvent(p: {
   ]
     .filter((l) => l !== '')
     .join('\n');
-
-  const res = await fetch(
-    `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?conferenceDataVersion=1&sendUpdates=all`,
-    {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        summary: `Entrevista ventas · Tezontle 3D — ${p.name}`,
-        description,
-        start: { dateTime: p.start, timeZone: TIMEZONE },
-        end: { dateTime: p.end, timeZone: TIMEZONE },
-        attendees,
-        guestsCanModify: false,
-        guestsCanInviteOthers: false,
-        conferenceData: {
-          createRequest: { requestId: p.bookingId, conferenceSolutionKey: { type: 'hangoutsMeet' } },
-        },
-        reminders: {
-          useDefault: false,
-          overrides: [
-            { method: 'email', minutes: 24 * 60 },
-            { method: 'popup', minutes: 15 },
-          ],
-        },
-      }),
-    },
-  );
-  const event = await res.json();
-  if (!res.ok) throw new Error(`google_event: ${JSON.stringify(event)}`);
-  const meetUrl =
-    event.hangoutLink ??
-    event.conferenceData?.entryPoints?.find((e: { entryPointType: string }) => e.entryPointType === 'video')?.uri;
-  if (!meetUrl) throw new Error('google_event: sin enlace de Meet');
-  return { id: event.id, meetUrl };
+  return createMeetEvent({
+    requestId: p.bookingId,
+    summary: `Entrevista ventas · Tezontle 3D — ${p.name}`,
+    description,
+    start: p.start,
+    end: p.end,
+    attendees,
+  });
 }
 
 function brandedEmail(p: { title: string; intro: string; when: string; meetUrl: string; extra?: string }) {
@@ -248,7 +204,7 @@ Deno.serve(async (req) => {
 
   let event: { id: string; meetUrl: string };
   try {
-    event = await createMeetEvent({ bookingId: booking.id, start: slot.start, end: slot.end, name, email, phone, notes });
+    event = await createInterviewEvent({ bookingId: booking.id, start: slot.start, end: slot.end, name, email, phone, notes });
   } catch (err) {
     console.error(err);
     await supabase.from('bookings').delete().eq('id', booking.id);

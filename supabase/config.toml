@@ -3,3 +3,10 @@ project_id = "tezontle-agenda"
 # La página llama a la función sin sesión de usuario: la función valida todo por su cuenta.
 [functions.book]
 verify_jwt = false
+
+[functions.book-demo]
+verify_jwt = false
+
+# Valida la sesión del usuario dentro de la función.
+[functions.team]
+verify_jwt = false

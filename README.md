@@ -112,3 +112,24 @@ El plan gratuito pausa el proyecto tras 7 días sin actividad. `netlify/function
 es una tarea programada de Netlify que consulta Supabase una vez al día para evitarlo. Se ve en
 Netlify → **Logs → Functions → keep-alive**. Si alguna vez se pausara, se reactiva desde el
 panel de Supabase con **Restore project** (los datos no se pierden).
+
+## Demos con clientes (equipo de ventas)
+
+Cada vendedor tiene su página pública `/demo/<enlace>` donde los clientes agendan una demo de
+45 minutos. La llamada se crea en el mismo calendario de Google (con Meet) e invita al cliente
+y al vendedor.
+
+- **Panel `/equipo`** (correo + contraseña):
+  - Vendedor: su enlace, sus próximas demos (con WhatsApp, correo y Meet del cliente; puede
+    cancelarlas y Google avisa al cliente), sus horarios por día y su perfil/contraseña.
+  - Administrador (`admins`, hoy `marcuspicazo@outlook.com`): además da de alta vendedores
+    (genera contraseña y el mensaje para enviárselo), pausa agendas, cambia contraseñas y ve
+    todas las demos.
+- **Horarios:** `supabase/functions/_shared/availability.ts` — demos de 45 min que empiezan
+  cada 30 min dentro de los rangos del vendedor, desde 4 h antes y hasta 30 días adelante.
+- **Sin encimes:** restricción de exclusión en `demo_bookings` por vendedor.
+- **Datos del cliente:** nombre, correo, WhatsApp, desarrolladora, ciudad del proyecto y número
+  de departamentos (mismas opciones que el formulario de la web).
+- Base de datos: `supabase/migrations/20261027000000_team_demos.sql`. Funciones: `book-demo`
+  (pública) y `team` (requiere sesión). El registro público está desactivado: solo el
+  administrador crea usuarios.

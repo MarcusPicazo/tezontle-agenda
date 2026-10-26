@@ -1,0 +1,182 @@
+---
+// Panel del equipo de ventas: cada vendedor entra con correo y contraseña, marca sus horarios
+// y ve sus demos. El administrador además da de alta vendedores y ve todas las demos.
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Panel del equipo · Tezontle 3D" description="Panel del equipo de ventas de Tezontle 3D." tag="Equipo de ventas">
+  <button
+    slot="header-end"
+    id="logout"
+    hidden
+    type="button"
+    class="rounded-full bg-cal px-4 py-2 text-sm font-semibold text-tinta-suave shadow-[inset_0_0_0_1px_rgba(43,43,43,0.08)] hover:text-grafito"
+  >
+    Salir
+  </button>
+
+  <!-- Inicio de sesión -->
+  <section id="login" hidden class="card mx-auto mt-4 max-w-md p-6 sm:mt-10 sm:p-10">
+    <span aria-hidden="true" class="mb-6 block h-1.5 w-16 rounded-full bg-laton"></span>
+    <h1 class="text-3xl sm:text-4xl">Panel del equipo</h1>
+    <p class="mt-2 text-tinta-suave">Entre con el correo y la contraseña que le dio Tezontle 3D.</p>
+    <form id="login-form" class="mt-8 space-y-4">
+      <div>
+        <label for="l-email" class="block text-sm font-semibold">Correo</label>
+        <input id="l-email" name="email" type="email" autocomplete="username" required class="field mt-1.5" />
+      </div>
+      <div>
+        <label for="l-password" class="block text-sm font-semibold">Contraseña</label>
+        <input id="l-password" name="password" type="password" autocomplete="current-password" required class="field mt-1.5" />
+      </div>
+      <p id="login-error" role="alert" hidden class="rounded-xl bg-rojo-tezontle/10 px-4 py-3 text-sm font-medium text-rojo-tezontle"></p>
+      <button id="login-submit" type="submit" class="btn btn-primary w-full">Entrar</button>
+    </form>
+  </section>
+
+  <!-- Panel -->
+  <div id="app" hidden>
+    <div class="flex flex-col gap-1">
+      <p class="text-sm font-semibold tracking-wide text-tinta-suave uppercase" id="role-label">Equipo de ventas</p>
+      <h1 id="hello" class="text-4xl sm:text-5xl">Hola.</h1>
+    </div>
+
+    <!-- Enlace del vendedor -->
+    <section id="link-card" hidden class="mt-6 flex flex-col gap-4 rounded-[28px] bg-grafito p-6 text-cal sm:flex-row sm:items-center sm:justify-between sm:p-8">
+      <div class="min-w-0">
+        <p class="text-sm font-semibold tracking-wide text-cal/70 uppercase">Su enlace para clientes</p>
+        <p id="my-link" class="mt-1 font-display text-xl break-all sm:text-2xl"></p>
+      </div>
+      <div class="flex shrink-0 gap-2">
+        <button id="copy-link" type="button" class="btn btn-primary">Copiar enlace</button>
+        <a id="open-link" href="#" target="_blank" rel="noopener" class="btn text-cal shadow-[inset_0_0_0_1px_rgba(251,249,245,0.35)] hover:bg-cal/10">Ver</a>
+      </div>
+    </section>
+
+    <nav id="tabs" class="mt-8 flex gap-1 overflow-x-auto rounded-full bg-cal p-1.5 text-sm font-semibold shadow-[inset_0_0_0_1px_rgba(43,43,43,0.06)] sm:inline-flex" role="tablist"></nav>
+
+    <!-- Citas del vendedor -->
+    <section id="tab-citas" hidden class="card mt-4 p-6 sm:p-10" role="tabpanel">
+      <h2 class="text-2xl sm:text-3xl">Próximas demos</h2>
+      <p class="mt-2 text-sm text-tinta-suave">Al cancelar una demo, Google le avisa al cliente y el horario vuelve a quedar libre.</p>
+      <div id="my-bookings" class="mt-6 space-y-3"></div>
+    </section>
+
+    <!-- Horarios del vendedor -->
+    <section id="tab-horarios" hidden class="card mt-4 p-6 sm:p-10" role="tabpanel">
+      <h2 class="text-2xl sm:text-3xl">Mis horarios</h2>
+      <p class="mt-2 text-sm text-tinta-suave">
+        Marque cuándo puede dar demos (hora de Ciudad de México). Cada demo dura 45 minutos y los clientes pueden
+        reservar desde 4 horas antes y hasta 30 días adelante.
+      </p>
+      <div id="availability" class="mt-6 divide-y divide-piedra/20"></div>
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <button id="save-availability" type="button" class="btn btn-primary">Guardar horarios</button>
+        <p id="availability-status" class="text-sm text-tinta-suave" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- Perfil -->
+    <section id="tab-perfil" hidden class="card mt-4 p-6 sm:p-10" role="tabpanel">
+      <div class="grid gap-10 lg:grid-cols-2">
+        <form id="profile-form" class="space-y-4">
+          <h2 class="text-2xl sm:text-3xl">Mi perfil</h2>
+          <p class="text-sm text-tinta-suave">Así lo ven sus clientes en su página.</p>
+          <div>
+            <label for="p-name" class="block text-sm font-semibold">Nombre</label>
+            <input id="p-name" name="name" type="text" required minlength="2" maxlength="80" class="field mt-1.5" />
+          </div>
+          <div>
+            <label for="p-title" class="block text-sm font-semibold">Puesto</label>
+            <input id="p-title" name="title" type="text" required maxlength="80" class="field mt-1.5" />
+          </div>
+          <div>
+            <label for="p-whatsapp" class="block text-sm font-semibold">WhatsApp <span class="font-normal text-tinta-suave">(opcional)</span></label>
+            <input id="p-whatsapp" name="whatsapp" type="tel" maxlength="30" class="field mt-1.5" />
+          </div>
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="submit" class="btn btn-primary">Guardar perfil</button>
+            <p id="profile-status" class="text-sm text-tinta-suave" aria-live="polite"></p>
+          </div>
+        </form>
+
+        <form id="password-form" class="space-y-4">
+          <h2 class="text-2xl sm:text-3xl">Cambiar contraseña</h2>
+          <p class="text-sm text-tinta-suave">Mínimo 8 caracteres.</p>
+          <div>
+            <label for="pw-new" class="block text-sm font-semibold">Nueva contraseña</label>
+            <input id="pw-new" name="password" type="password" autocomplete="new-password" required minlength="8" class="field mt-1.5" />
+          </div>
+          <div>
+            <label for="pw-confirm" class="block text-sm font-semibold">Repita la contraseña</label>
+            <input id="pw-confirm" name="confirm" type="password" autocomplete="new-password" required minlength="8" class="field mt-1.5" />
+          </div>
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="submit" class="btn btn-ghost">Cambiar contraseña</button>
+            <p id="password-status" class="text-sm text-tinta-suave" aria-live="polite"></p>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Administración: equipo -->
+    <section id="tab-equipo" hidden class="card mt-4 p-6 sm:p-10" role="tabpanel">
+      <div class="grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-14">
+        <div class="min-w-0">
+          <h2 class="text-2xl sm:text-3xl">Vendedores</h2>
+          <div id="sellers" class="mt-6 space-y-3"></div>
+        </div>
+        <form id="seller-form" class="space-y-4 self-start rounded-3xl bg-arena p-5 sm:p-6">
+          <h3 class="text-2xl">Dar de alta</h3>
+          <div>
+            <label for="s-name" class="block text-sm font-semibold">Nombre</label>
+            <input id="s-name" name="name" type="text" required minlength="2" maxlength="80" class="field mt-1.5 bg-cal" placeholder="Ana López" />
+          </div>
+          <div>
+            <label for="s-email" class="block text-sm font-semibold">Correo (con este entra al panel)</label>
+            <input id="s-email" name="email" type="email" required class="field mt-1.5 bg-cal" placeholder="ana@correo.com" />
+          </div>
+          <div>
+            <label for="s-slug" class="block text-sm font-semibold">Enlace</label>
+            <div class="mt-1.5 flex items-center rounded-[14px] bg-cal pl-4 text-sm text-tinta-suave focus-within:shadow-[inset_0_0_0_1.5px_var(--color-grafito)]">
+              <span class="shrink-0">/demo/</span>
+              <input id="s-slug" name="slug" type="text" required pattern="[a-z0-9]+(-[a-z0-9]+)*" maxlength="40" class="field min-w-0 bg-transparent pl-0.5 shadow-none focus:shadow-none" placeholder="ana" />
+            </div>
+          </div>
+          <div>
+            <label for="s-title" class="block text-sm font-semibold">Puesto</label>
+            <input id="s-title" name="title" type="text" maxlength="80" class="field mt-1.5 bg-cal" value="Asesor comercial" />
+          </div>
+          <div>
+            <label for="s-password" class="block text-sm font-semibold">Contraseña inicial</label>
+            <div class="mt-1.5 flex gap-2">
+              <input id="s-password" name="password" type="text" required minlength="8" class="field bg-cal font-mono" />
+              <button id="gen-password" type="button" class="btn btn-ghost shrink-0 px-4" aria-label="Generar otra contraseña">↻</button>
+            </div>
+          </div>
+          <p id="seller-error" role="alert" hidden class="rounded-xl bg-rojo-tezontle/10 px-4 py-3 text-sm font-medium text-rojo-tezontle"></p>
+          <button id="seller-submit" type="submit" class="btn btn-primary w-full">Dar de alta</button>
+          <div id="seller-created" hidden class="rounded-2xl bg-cal p-4 text-sm">
+            <p class="font-semibold">Listo. Mándele este mensaje:</p>
+            <pre id="seller-message" class="mt-2 font-sans whitespace-pre-wrap text-tinta-suave"></pre>
+            <button id="copy-message" type="button" class="btn btn-ghost mt-3 min-h-10 py-1.5 text-sm">Copiar mensaje</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- Administración: todas las demos -->
+    <section id="tab-todas" hidden class="card mt-4 p-6 sm:p-10" role="tabpanel">
+      <h2 class="text-2xl sm:text-3xl">Todas las demos</h2>
+      <p class="mt-2 text-sm text-tinta-suave">Próximas demos de todo el equipo.</p>
+      <div id="all-bookings" class="mt-6 space-y-3"></div>
+    </section>
+
+    <section id="no-access" hidden class="card mt-6 p-6 text-center sm:p-10">
+      <h2 class="text-2xl">Su usuario todavía no tiene agenda.</h2>
+      <p class="mt-2 text-tinta-suave">Pídale al administrador que lo dé de alta como vendedor.</p>
+    </section>
+  </div>
+
+  <script src="../scripts/team.ts"></script>
+</Base>

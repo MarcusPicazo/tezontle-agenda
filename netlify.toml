@@ -11,3 +11,9 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "DENY"
+
+# Página pública de cada vendedor: /demo/<enlace> sirve /demo/index.html y el script lee el enlace.
+[[redirects]]
+  from = "/demo/*"
+  to = "/demo/index.html"
+  status = 200

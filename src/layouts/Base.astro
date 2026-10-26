@@ -1,0 +1,53 @@
+---
+// Estructura común de las páginas de demos y del panel del equipo: mismo header, fondo y
+// pie que la agenda de entrevistas (src/pages/index.astro).
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Texto de la píldora del header. */
+  tag: string;
+  noindex?: boolean;
+}
+
+const { title, description, tag, noindex = true } = Astro.props;
+---
+
+<html lang="es-MX">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#F4EFE8" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/piedra.jpg" />
+  </head>
+  <body class="min-h-dvh bg-arena font-sans text-grafito antialiased">
+    <header class="mx-auto flex w-full max-w-[1200px] items-center justify-between gap-4 px-4 pt-6 sm:px-6 sm:pt-8">
+      <img src="/logo.svg" alt="Tezontle 3D" class="h-7 w-auto sm:h-8" width="140" height="32" />
+      <slot name="header-end">
+        <span
+          class="rounded-full bg-cal px-3.5 py-1.5 text-xs font-semibold tracking-wide text-tinta-suave uppercase shadow-[inset_0_0_0_1px_rgba(43,43,43,0.08)] sm:text-[13px]"
+        >
+          {tag}
+        </span>
+      </slot>
+    </header>
+
+    <main class="mx-auto w-full max-w-[1200px] px-4 pt-6 pb-16 sm:px-6 sm:pt-10">
+      <slot />
+
+      <footer class="mt-12 flex flex-col items-center gap-2 text-center text-sm text-tinta-suave">
+        <img src="/favicon.svg" alt="" aria-hidden="true" class="h-8 w-8 rounded-lg" />
+        <p>Tezontle 3D · Showroom virtual 3D con inventario en vivo para preventas.</p>
+        <a href="/privacidad" class="underline underline-offset-4 hover:text-grafito">Aviso de privacidad</a>
+      </footer>
+    </main>
+  </body>
+</html>
