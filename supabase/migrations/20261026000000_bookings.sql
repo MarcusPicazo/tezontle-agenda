@@ -45,3 +45,7 @@ $$;
 
 revoke all on function public.booked_slots(timestamptz, timestamptz) from public;
 grant execute on function public.booked_slots(timestamptz, timestamptz) to anon, authenticated;
+
+-- La Edge Function usa service_role. Explícito por si el proyecto no expone tablas nuevas
+-- automáticamente.
+grant select, insert, update, delete on public.bookings to service_role;

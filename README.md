@@ -52,15 +52,18 @@ Las llamadas se crean en el calendario de una cuenta de Google (Gmail o Workspac
 2. **APIs y servicios → Biblioteca →** habilite **Google Calendar API**.
 3. **Pantalla de consentimiento OAuth:** tipo *Externo*, agregue su correo como usuario de
    prueba y luego pulse **Publicar app** (en modo "Prueba" el token caduca a los 7 días).
-4. **Credenciales → Crear credenciales → ID de cliente OAuth → App de escritorio.** Copie el
-   *Client ID* y el *Client secret*.
-5. En su computadora, dentro de este proyecto:
-   ```bash
-   npm install
-   GOOGLE_CLIENT_ID=xxx GOOGLE_CLIENT_SECRET=yyy npm run google-token
-   ```
-   Abra el enlace, entre con la cuenta de Google y acepte (si dice "app no verificada",
-   *Configuración avanzada → Ir a…*). La terminal imprime `GOOGLE_REFRESH_TOKEN=...`.
+4. **Credenciales → Crear credenciales → ID de cliente OAuth → Aplicación web.** En
+   "URI de redireccionamiento autorizados" agregue `https://developers.google.com/oauthplayground`.
+   Copie el *Client ID* y el *Client secret*.
+5. Abra [developers.google.com/oauthplayground](https://developers.google.com/oauthplayground):
+   - Engrane ⚙ → marque **Use your own OAuth credentials** y pegue Client ID y secret.
+   - En "Input your own scopes" escriba `https://www.googleapis.com/auth/calendar.events` →
+     **Authorize APIs** → entre con la cuenta de Google y acepte (si dice "app no verificada",
+     *Configuración avanzada → Ir a…*).
+   - **Exchange authorization code for tokens** → copie el **Refresh token**.
+
+   (Alternativa local: `GOOGLE_CLIENT_ID=xxx GOOGLE_CLIENT_SECRET=yyy npm run google-token` con
+   un cliente tipo *App de escritorio*.)
 
 ### 3. Secretos y despliegue de la función
 
