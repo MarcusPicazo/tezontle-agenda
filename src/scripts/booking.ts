@@ -10,6 +10,22 @@ const DEMO_KEY = 'tezontle-agenda-demo';
 const REFRESH_MS = 30_000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
+// Reservas del modo demostración (solo este navegador; si el almacenamiento falla, en memoria).
+let demoMemory: string[] = [];
+const readDemo = (): string[] => {
+  try {
+    return JSON.parse(localStorage.getItem(DEMO_KEY) ?? '[]');
+  } catch {
+    return demoMemory;
+  }
+};
+const writeDemo = (list: string[]) => {
+  demoMemory = list;
+  try {
+    localStorage.setItem(DEMO_KEY, JSON.stringify(list));
+  } catch {}
+};
+
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const els = {
   days: $('days'),
@@ -53,7 +69,7 @@ const isBooked = (s: Slot) => booked.has(Date.parse(s.start));
 
 async function fetchBooked(): Promise<Set<number>> {
   if (DEMO) {
-    const list: string[] = JSON.parse(localStorage.getItem(DEMO_KEY) ?? '[]');
+    const list = readDemo();
     return new Set(list.map((s) => Date.parse(s)));
   }
   const from = slots[0]?.start ?? new Date().toISOString();
@@ -73,9 +89,9 @@ type BookResult = { ok: true; meetUrl: string } | { ok: false; error: string };
 async function book(payload: Record<string, string>): Promise<BookResult> {
   if (DEMO) {
     await new Promise((r) => setTimeout(r, 700));
-    const list: string[] = JSON.parse(localStorage.getItem(DEMO_KEY) ?? '[]');
+    const list = readDemo();
     if (list.some((s) => Date.parse(s) === Date.parse(payload.slot))) return { ok: false, error: 'slot_taken' };
-    localStorage.setItem(DEMO_KEY, JSON.stringify([...list, payload.slot]));
+    writeDemo([...list, payload.slot]);
     return { ok: true, meetUrl: 'https://meet.google.com/abc-defg-hij' };
   }
   try {
